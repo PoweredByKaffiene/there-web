@@ -1,0 +1,70 @@
+from api_app.core.models import BaseMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
+from django.db import models
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+class UserManager(BaseUserManager):
+    def create_user(self, username, email, password=None, auth_provider="email"):
+        if username is None:
+            raise TypeError("Users should have a username")
+        if email is None:
+            raise TypeError("Users should have a Email")
+
+        user = self.model(
+            username=username,
+            email=self.normalize_email(email),
+            auth_provider=auth_provider,
+        )
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, username, email, password=None):
+        if password is None:
+            raise TypeError("Password should not be none")
+
+        user = self.create_user(username, email, password)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+        return user
+
+
+AUTH_PROVIDERS = {"google": "google", "email": "email"}
+
+
+class Roles(models.TextChoices):
+    DRIVER = "driver"
+    REVIEWER = "reviewer"
+
+
+class User(AbstractBaseUser, PermissionsMixin, BaseMixin):
+    username = models.CharField(max_length=255, unique=True, db_index=True)
+    email = models.EmailField(max_length=255, unique=True, db_index=True)
+    is_staff = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    auth_provider = models.CharField(
+        max_length=255, blank=False, null=False, default=AUTH_PROVIDERS.get("email")
+    )
+    avatar = models.CharField(default="", max_length=225)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
+
+    role = models.CharField(default=Roles.DRIVER, choices=Roles.choices)
+
+    objects = UserManager()
+
+    def __str__(self):
+        return self.email
+
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {"refresh": str(refresh), "access": str(refresh.access_token)}
