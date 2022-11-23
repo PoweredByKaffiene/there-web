@@ -58,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseMixin):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 
-    role = models.CharField(default=Roles.DRIVER, choices=Roles.choices)
+    role = models.CharField(default=Roles.DRIVER, choices=Roles.choices, max_length=8)
 
     objects = UserManager()
 
