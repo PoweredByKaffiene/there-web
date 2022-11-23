@@ -61,7 +61,7 @@ class LoginAPIView(generics.GenericAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-class LogoutAPIView(generics.GenericAPIView):
+class LogoutAPIView(APIView):
     serializer_class = LogoutSerializer
 
     permission_classes = (permissions.IsAuthenticated,)
@@ -78,12 +78,9 @@ class LogoutAPIView(generics.GenericAPIView):
 
 
 class MeAPIView(generics.ListAPIView):
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get_queryset(self):
-        user = self.request.user
-        return User.objects.filter(id=user.id)
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def google_login(request):
