@@ -1,7 +1,6 @@
 import os
 
 from celery import Celery
-from celery.schedules import crontab
 from django.conf import settings
 from kombu import Exchange, Queue
 
@@ -11,13 +10,13 @@ app = Celery("backend")
 app.config_from_object("django.conf:settings")
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
-app.conf.beat_schedule = {
-    "ping_servers": {
-        "task": "backend.tasks.PingServers",
-        "schedule": crontab(minute=settings.PING_SERVERS_MINUTES),
-        "options": {"queue": "default"},
-    },
-}
+# app.conf.beat_schedule = {
+#     "ping_servers": {
+#         "task": "backend.tasks.PingServers",
+#         "schedule": crontab(minute=settings.PING_SERVERS_MINUTES),
+#         "options": {"queue": "default"},
+#     },
+# }
 
 app.conf.update(
     task_default_queue="default",

@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "authentication",
     "api_app",
     "api_app.core",
+    "api_app.locations",
 ]
 
 SIMPLE_JWT = {
@@ -112,9 +113,10 @@ TEMPLATES = [
     },
 ]
 
+
 ASGI_APPLICATION = "backend.asgi.application"
 WSGI_APPLICATION = "backend.wsgi.application"
-DEMO_INSTANCE = True if os.environ.get("DEMO_INSTANCE") == "true" else False
+# DEMO_INSTANCE = True if os.environ.get("DEMO_INSTANCE") == "true" else False
 
 CHANNEL_LAYERS = {
     "default": {
@@ -127,10 +129,13 @@ CHANNEL_LAYERS = {
 
 
 CACHES = {
-    'default': {
-        'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': 'redis:6379',
-    },
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
 }
 
 
@@ -146,13 +151,13 @@ DATABASES = {
 }
 
 
-if DEMO_INSTANCE:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+# if DEMO_INSTANCE:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": BASE_DIR / "db.sqlite3",
+#         }
+#     }
 
 
 # Password validation

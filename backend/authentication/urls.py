@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import (  # RegisterView,
@@ -7,10 +7,6 @@ from .views import (  # RegisterView,
     LogoutAPIView,
     MeAPIView,
     google_login,
-)
-
-from .consumers import (
-    LocationConsumer
 )
 
 urlpatterns = [
@@ -29,8 +25,4 @@ urlpatterns = [
         MeAPIView.as_view(),
         name="my-user-info",
     ),
-    re_path(
-        "ws/location",
-        LocationConsumer.as_asgi()
-    )
 ]

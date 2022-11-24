@@ -58,26 +58,26 @@ services:
       - rabbit
       - redis
 
-  celery_beat:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
-    volumes:
-      - "./:/app"
-    networks:
-      default:
-      internal:
-    container_name: celery_beat_there
-    entrypoint: /app/entrypoint_beat_celery.sh
-    env_file:
-      - ./.env
-    depends_on:
-      - redis
-      - postgres
-    links:
-      - postgres
-      - rabbit
-      - redis
+  # celery_beat:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./Dockerfile
+  #   volumes:
+  #     - "./:/app"
+  #   networks:
+  #     default:
+  #     internal:
+  #   container_name: celery_beat_there
+  #   entrypoint: /app/entrypoint_beat_celery.sh
+  #   env_file:
+  #     - ./.env
+  #   depends_on:
+  #     - redis
+  #     - postgres
+  #   links:
+  #     - postgres
+  #     - rabbit
+  #     - redis
 
   rabbit:
     hostname: rabbit
