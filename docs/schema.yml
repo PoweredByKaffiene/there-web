@@ -6,9 +6,9 @@ info:
 paths:
   /authentication/google-callback:
     get:
-      operationId: google_callback_retrieve
+      operationId: authentication_google_callback_retrieve
       tags:
-      - google-callback
+      - authentication
       security:
       - basicAuth: []
       - cookieAuth: []
@@ -19,9 +19,9 @@ paths:
         '200':
           description: No response body
     post:
-      operationId: google_callback_create
+      operationId: authentication_google_callback_create
       tags:
-      - google-callback
+      - authentication
       security:
       - basicAuth: []
       - cookieAuth: []
@@ -33,9 +33,9 @@ paths:
           description: No response body
   /authentication/login:
     post:
-      operationId: login_create
+      operationId: authentication_login_create
       tags:
-      - login
+      - authentication
       requestBody:
         content:
           application/json:
@@ -63,9 +63,9 @@ paths:
           description: ''
   /authentication/logout:
     post:
-      operationId: logout_create
+      operationId: authentication_logout_create
       tags:
-      - logout
+      - authentication
       security:
       - basicAuth: []
       - cookieAuth: []
@@ -76,9 +76,9 @@ paths:
           description: No response body
   /authentication/me:
     get:
-      operationId: me_retrieve
+      operationId: authentication_me_retrieve
       tags:
-      - me
+      - authentication
       security:
       - basicAuth: []
       - cookieAuth: []
@@ -90,12 +90,12 @@ paths:
           description: No response body
   /authentication/token/refresh:
     post:
-      operationId: token_refresh_create
+      operationId: authentication_token_refresh_create
       description: |-
         Takes a refresh type JSON web token and returns an access type JSON web
         token if the refresh token is valid.
       tags:
-      - token
+      - authentication
       requestBody:
         content:
           application/json:
@@ -115,6 +115,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/TokenRefresh'
           description: ''
+  /locations/save:
+    post:
+      operationId: locations_save_create
+      tags:
+      - locations
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
 components:
   schemas:
     Login:
