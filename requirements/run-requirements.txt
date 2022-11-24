@@ -15,5 +15,4 @@ celery
 redis
 django-jsonfield
 django-celery-beat
-scipy
 drf-spectacular
